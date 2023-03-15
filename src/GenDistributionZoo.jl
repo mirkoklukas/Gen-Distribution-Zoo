@@ -3,13 +3,13 @@
 #   This is an auto-generated file  # 
 #   based on the jupyter notebook   # 
 #
-#   >   ``01_Gen_jl_Distributions_Module.ipynb''
+#   >   ``notebooks/01_Gen_Distribution_Zoo.ipynb''
 #
 #                                   #
 # # # # # # # # # # # # # # # # # # #
 
 ##################################### 
-module GenDists  
+module GenDistributionZoo  
 #####################################
 
 using Gen
