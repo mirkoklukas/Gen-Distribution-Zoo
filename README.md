@@ -10,7 +10,8 @@ So far we have:
 	- Diagonal Gaussian (faster than `mvnormal`)
 	- There already is a `broadcasted_normal` &mdash; it's similar in performance
 - `ProductDistribution`: 
-	- `HeterogeneousProduct` and `HomogeneousProduct`
+	- `HomogeneousProduct`
+	- <s>`HeterogeneousProduct`</s> wrong args, under constr ...
 	- One can specify the dimension along which the args of each distribution are "stacked".
 	
 - `PushForward`: ... 
