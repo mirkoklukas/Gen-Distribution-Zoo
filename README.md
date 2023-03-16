@@ -6,8 +6,13 @@ Repo for all sorts of Gen distributions ....
 
 So far we have:
 
-- `diagnormal`: Diagonal Gaussian (faster than `mvnormal`)
-- `ProductDistribution`: ...
+- `diagnormal`: 
+	- Diagonal Gaussian (faster than `mvnormal`)
+	- There already is a `broadcasted_normal` &mdash; it's similar in performance
+- `ProductDistribution`: 
+	- `HeterogeneousProduct` and `HomogeneousProduct`
+	- One can specify the dimension along which the args of each distribution are "stacked".
+	
 - `PushForward`: ... 
 - ...
 

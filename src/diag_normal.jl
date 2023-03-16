@@ -3,7 +3,7 @@
 #   This is an auto-generated file  # 
 #   based on the jupyter notebook   # 
 #
-#   >   ``01_Diagonal_Normal.ipynb''
+#   >   ``02_Diagonal_Normal.ipynb''
 #
 #                                   #
 # # # # # # # # # # # # # # # # # # #
@@ -42,10 +42,6 @@ function Gen.logpdf(::DiagonalNormal, xs::AbstractVector{T},
     end
     return log_p
 end
-
-# function logpdf_grad(::DiagonalNormal, xs::AbstractVector{T},
-#                 mus::AbstractVector{U}, stds::AbstractVector{V}) where {T <: Real, U <: Real, V <: Real}
-# end
 
 
 has_output_grad(::DiagonalNormal) = true
