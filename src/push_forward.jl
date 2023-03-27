@@ -3,14 +3,13 @@
 #   This is an auto-generated file  # 
 #   based on the jupyter notebook   # 
 #
-#   >   ``push-forward/00_The_push-forward_of_a_distribution.ipynb''
+#   >   ``push-forward/01_The_push-forward_of_a_distribution.ipynb''
 #
 #                                   #
 # # # # # # # # # # # # # # # # # # #
 
 using Gen
 using Zygote
-
 
 struct OutOfDomain end
 const out_of_domain = OutOfDomain()
@@ -143,7 +142,7 @@ end
 #      https://github.com/probcomp/Gen.jl/pull/501
 #      https://github.com/probcomp/Gen.jl/issues/500
 #
-function Gen.HeterogeneousMixture(distributions::Vector{PushForward{T,T′}}) where {T, T′}
+function Gen.HeterogeneousMixture(distributions::Vector{D}) where {T, D <: Distribution{T}}
     _has_output_grad = true
     _has_argument_grads = Bool[true] # weights
     _is_discrete = true
@@ -161,7 +160,7 @@ function Gen.HeterogeneousMixture(distributions::Vector{PushForward{T,T′}}) wh
         push!(num_args, length(has_argument_grads(dist)))
     end
     K = length(distributions)
-    return HeterogeneousMixture{T}(
+    return Gen.HeterogeneousMixture{T}(
         K, distributions,
         _has_output_grad,
         tuple(_has_argument_grads...),

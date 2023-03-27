@@ -3,7 +3,7 @@
 #   This is an auto-generated file  # 
 #   based on the jupyter notebook   # 
 #
-#   >   ``notebooks/01_Gen_Distribution_Zoo.ipynb''
+#   >   ``01_Gen_Distribution_Zoo.ipynb''
 #
 #                                   #
 # # # # # # # # # # # # # # # # # # #
