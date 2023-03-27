@@ -13,16 +13,16 @@ using Gen
 struct DiagonalNormal <: Distribution{Vector{Float64}} end
 const diagnormal = DiagonalNormal()
 
-function random(::DiagonalNormal, mus::AbstractVector{U}, stds::AbstractVector{V}) where {U <: Real, V <: Real}
+function Gen.random(::DiagonalNormal, mus::AbstractVector{U}, stds::AbstractVector{V}) where {U <: Real, V <: Real}
     return [normal(mu, std) for (mu,std) in zip(mus, stds)]
 end
 
-function random(::DiagonalNormal, mus::AbstractVector{U}, std::V) where {U <: Real, V <: Real}
+function Gen.random(::DiagonalNormal, mus::AbstractVector{U}, std::V) where {U <: Real, V <: Real}
     return [normal(mu, std) for mu in mus]
 end
 
-(::DiagonalNormal)(mus::AbstractVector{U}, stds::AbstractVector{V})  where {U <: Real, V <: Real} = random(DiagonalNormal(), mus, stds)
-(::DiagonalNormal)(mus::AbstractVector{U}, std::V)  where {U <: Real, V <: Real} = random(DiagonalNormal(), mus, std)
+(::DiagonalNormal)(mus::AbstractVector{U}, stds::AbstractVector{V})  where {U <: Real, V <: Real} = Gen.random(DiagonalNormal(), mus, stds)
+(::DiagonalNormal)(mus::AbstractVector{U}, std::V)  where {U <: Real, V <: Real} = Gen.random(DiagonalNormal(), mus, std)
 
 
 function Gen.logpdf(::DiagonalNormal, xs::AbstractVector{T},
@@ -44,5 +44,5 @@ function Gen.logpdf(::DiagonalNormal, xs::AbstractVector{T},
 end
 
 
-has_output_grad(::DiagonalNormal) = true
-has_argument_grads(::DiagonalNormal) = (true, true)
+Gen.has_output_grad(::DiagonalNormal) = true
+Gen.has_argument_grads(::DiagonalNormal) = (true, true)

@@ -32,7 +32,7 @@ end
 
 function Gen.random(Q::PushForward, args...) Q.f(random(Q.dist, args...))
 end
-(Q::PushForward)(args...) = random(Q, args...)
+(Q::PushForward)(args...) = Gen.random(Q, args...)
 function Gen.logpdf(Q::PushForward{T,T′}, y::T′, args...) where {T, T′}
     x = Q.finv(y)
 
