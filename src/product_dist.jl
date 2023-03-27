@@ -3,7 +3,7 @@
 #   This is an auto-generated file  # 
 #   based on the jupyter notebook   # 
 #
-#   >   ``notebooks/03_Product_Distribution.ipynb''
+#   >   ``03_Product_Distribution.ipynb''
 #
 #                                   #
 # # # # # # # # # # # # # # # # # # #
@@ -29,26 +29,33 @@ function mycat(xs::Vector{T}; dims) where T
     return cat(xs...; dims=d)
 end
 
+function slicedim(a, d::Int, i::Int)
+    return ndims(a) == 1 ? a[i] : selectdim(a, d > 0 ? d : ndims(a)+d+1, i)
+end
+
+function num_factors(args::Tuple, d::Int)
+    a = args[1]
+    d = d > 0 ? d : ndims(a)+d+1
+    return size(a, d)
+end
+
 struct HomogeneousProduct{T} <: ProductDistribution{T}
     dist::Distribution{T}
-    n::Int
+#     n::Int
     slicedim::Int  # indicates the dimension specifying
                    # the arguments for each dist
                    # Default is along 1st dimension - differs
                    # from Gen's mixtures.
 end
-ProductDistribution(dist::Distribution{T}, n::Int, s::Int) where T = HomogeneousProduct{T}(dist, n, s)
-ProductDistribution(dist::Distribution{T}, n::Int)         where T = HomogeneousProduct{T}(dist, n, 1)
+ProductDistribution(dist::Distribution{T}, s::Int) where T = HomogeneousProduct{T}(dist, s)
+ProductDistribution(dist::Distribution{T})         where T = HomogeneousProduct{T}(dist, 1)
 
-
-function slicedim(a, d::Int, i::Int)
-    return ndims(a) == 1 ? a[i] : selectdim(a, d > 0 ? d : ndims(a)+d+1, i)
-end
 
 function Gen.random(Q::HomogeneousProduct, args...)
     p = Q.dist
-    n = Q.n
+#     n = Q.n
     d = Q.slicedim
+    n = num_factors(args, d)
 
     ys = [p((slicedim(a, d, i) for a in args)...) for i=1:n]
 
@@ -68,8 +75,9 @@ end
 
 function Gen.logpdf(Q::HomogeneousProduct{T}, xs, args...) where T
     p = Q.dist
-    n = Q.n
+#     n = Q.n
     d = Q.slicedim
+    n = num_factors(args, d)
     return sum([
         Gen.logpdf(p, slicedim(xs, d, i), (slicedim(a, d, i) for a in args)...) for i=1:n
     ])
@@ -78,8 +86,9 @@ end
 function Gen.logpdf_grad(Q::HomogeneousProduct{T}, xs, args...) where T
 
     p = Q.dist
-    n = Q.n
+#     n = Q.n
     d = Q.slicedim
+    n = num_factors(args, d)
     k = length(args) + 1
     grads = [
         Gen.logpdf_grad(p, slicedim(xs, d, i), (slicedim(a, d, i) for a in args)...) for i=1:n
@@ -94,5 +103,5 @@ function Gen.logpdf_grad(Q::HomogeneousProduct{T}, xs, args...) where T
     return rearranged_grads
 end
 
-Gen.has_output_grad(Q::HomogeneousProduct)    = has_output_grad(Q.dist)
-Gen.has_argument_grads(Q::HomogeneousProduct) = Tuple([Gen.has_argument_grads(Q.dist) for i=1:Q.n])
+Gen.has_output_grad(Q::HomogeneousProduct)    = Gen.has_output_grad(Q.dist)
+Gen.has_argument_grads(Q::HomogeneousProduct) = Gen.has_argument_grads(Q.dist)
