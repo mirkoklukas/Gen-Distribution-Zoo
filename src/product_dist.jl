@@ -41,7 +41,6 @@ end
 
 struct HomogeneousProduct{T} <: ProductDistribution{T}
     dist::Distribution{T}
-#     n::Int
     slicedim::Int  # indicates the dimension specifying
                    # the arguments for each dist
                    # Default is along 1st dimension - differs
@@ -53,7 +52,6 @@ ProductDistribution(dist::Distribution{T})         where T = HomogeneousProduct{
 
 function Gen.random(Q::HomogeneousProduct, args...)
     p = Q.dist
-#     n = Q.n
     d = Q.slicedim
     n = num_factors(args, d)
 
@@ -75,7 +73,6 @@ end
 
 function Gen.logpdf(Q::HomogeneousProduct{T}, xs, args...) where T
     p = Q.dist
-#     n = Q.n
     d = Q.slicedim
     n = num_factors(args, d)
     return sum([
@@ -86,7 +83,6 @@ end
 function Gen.logpdf_grad(Q::HomogeneousProduct{T}, xs, args...) where T
 
     p = Q.dist
-#     n = Q.n
     d = Q.slicedim
     n = num_factors(args, d)
     k = length(args) + 1
