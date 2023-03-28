@@ -3,7 +3,7 @@
 #   This is an auto-generated file  # 
 #   based on the jupyter notebook   # 
 #
-#   >   ``03_Product_Distribution.ipynb''
+#   >   ``notebooks/03_Product_Distribution.ipynb''
 #
 #                                   #
 # # # # # # # # # # # # # # # # # # #
@@ -29,14 +29,28 @@ function mycat(xs::Vector{T}; dims) where T
     return cat(xs...; dims=d)
 end
 
-function slicedim(a, d::Int, i::Int)
-    return ndims(a) == 1 ? a[i] : selectdim(a, d > 0 ? d : ndims(a)+d+1, i)
-end
-
 function num_factors(args::Tuple, d::Int)
     a = args[1]
     d = d > 0 ? d : ndims(a)+d+1
     return size(a, d)
+end
+
+function slicedim(a, d::Int, i::Int)
+    if ndims(a) == 1
+        return a[i]
+    end
+    sel = selectdim(a, d > 0 ? d : ndims(a)+d+1, i)
+    T = eltype(sel)
+    return AbstractArray{T}(sel)
+    # Why the conversion to `AbstractArray`?
+    # See `slicedim_old` below.
+    # TL;DR - Unfortunately some distributions expect concrete vector types
+    # and can't handle something that only resolves to an abstract vector.
+end
+
+function slicedim_old(a, d::Int, i::Int)
+    sel = selectdim(a, d > 0 ? d : ndims(a)+d+1, i)
+    return ndims(a) == 1 ? a[i] : sel
 end
 
 struct HomogeneousProduct{T} <: ProductDistribution{T}
